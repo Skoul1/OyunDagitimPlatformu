@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Games</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	    <style>
+        body {
+            background: linear-gradient(45deg, #000000, #0f0f0f, #1c1c1c, #272727);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+        }
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .neon-text {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #ff0000,
+                0 0 10px #ff0000,
+                0 0 20px #ff0000,
+                0 0 40px #ff0000,
+                0 0 80px #ff0000,
+                0 0 90px #ff0000,
+                0 0 100px #ff0000,
+                0 0 150px #ff0000;
+        }
+        .neon-hover:hover {
+            text-shadow: 
+                0 0 5px #ff0000,
+                0 0 10px #ff0000,
+                0 0 20px #ff0000,
+                0 0 40px #ff0000,
+                0 0 80px #ff0000,
+                0 0 90px #ff0000,
+                0 0 100px #ff0000,
+                0 0 150px #ff0000;
+        }
+    </style>
+</head>
+<body class="bg-gray-800 text-white flex">
+    <nav id="header" class="bg-black w-64 min-h-screen p-4 flex flex-col">
+        <div class="flex items-center space-x-4 mb-6">
+            <a href="/admin/dashboard" class="neon-text text-3xl hover:text-red-600">Admin Dashboard - Games</a>
+        </div>
+        <nav class="flex flex-col space-y-2">
+            <a href="/admin/users" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Users</a>
+            <a href="/admin/publishers" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Publishers</a>
+            <a href="/admin/games" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Games</a>
+            <a href="/admin/pending_games" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Pending Games</a>
+        </nav>
+    </nav>
+	<div class="flex-1 p-6">
+		<header class="flex justify-between items-center mb-6">
+		    <h2 class="neon-text text-2xl">Admin Dashboard</h2>
+		    <div class="flex items-center space-x-4">
+		        <span class="text-white px-3 py-2">Balance: ₺<span th:text="${balance}"></span></span>
+		        <a href="/profile" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Profile</a>
+		        <form th:action="@{/logout}" method="post" style="display:inline;">
+		            <button type="submit" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover" style="background:none; border:none; padding:0; margin:0; cursor:pointer;">Logout</button>
+		        </form>
+		    </div>
+		</header>
+    <main class="flex-1 p-6">
+        <table class="w-full text-sm">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="h-12 uppercase">
+                    <th class="px-6 py-3">Image</th>
+                    <th class="px-6 py-3">Game ID</th>
+                    <th class="px-6 py-3">Title</th>
+                    <th class="px-6 py-3">Description</th>
+                    <th class="px-6 py-3">Category</th>
+                    <th class="px-6 py-3">Price</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="gameTableBody" th:each="game : ${games}">
+                <tr>
+                    <td class="px-6 py-4">
+                        <img th:src="@{'/images/' + ${game.getImageFileName}}" alt="Game Image" style="height: 50px; width: auto;">
+                    </td>
+                    <td class="px-6 py-4" th:text="${game.id}">1</td>
+                    <td class="px-6 py-4" th:text="${game.title}">Game Title</td>
+                    <td class="px-6 py-4" th:text="${game.description}">Description</td>
+                    <td class="px-6 py-4" th:text="${game.category}">Category</td>
+                    <td class="px-6 py-4" th:text="${game.price}">Price</td>
+                    <td class="px-6 py-4" th:text="${game.status}">Status</td>
+                    <td class="px-6 py-4">
+                        <div class="flex space-x-2 justify-center">
+                            <form th:action="@{/admin/activate_game/{id}(id=${game.id})}" method="post">
+                                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Activate</button>
+                            </form>
+                            <form th:action="@{/admin/deactivate_game/{id}(id=${game.id})}" method="post">
+                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Deactivate</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+	</div>
+</body>
+</html>

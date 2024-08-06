@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Publisher Panel</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/publisher_panel_css.css}" />   
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Publisher Panel</h1>
+            <nav>
+                <ul class="menu">
+                    <li><a th:href="@{/publisher/games}">List Games</a></li>
+                    <li><a th:href="@{/publisher/add_game}">Add Game</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+	<script type="text/javascript" th:src="@{/js/publisher_panel_js.js}"></script>
+</body>
+</html>

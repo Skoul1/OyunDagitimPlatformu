@@ -1,0 +1,92 @@
+	<!DOCTYPE html>
+	<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Publishers - Admin Dashboard</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	    <style>
+	        body {
+	            background: linear-gradient(45deg, #000000, #0f0f0f, #1c1c1c, #272727);
+	            background-size: 400% 400%;
+	            animation: gradientBackground 15s ease infinite;
+	        }
+	        @keyframes gradientBackground {
+	            0% { background-position: 0% 50%; }
+	            50% { background-position: 100% 50%; }
+	            100% { background-position: 0% 50%; }
+	        }
+	        .neon-text {
+	            color: #fff;
+	            text-shadow: 
+	                0 0 5px #ff0000,
+	                0 0 10px #ff0000,
+	                0 0 20px #ff0000,
+	                0 0 40px #ff0000,
+	                0 0 80px #ff0000,
+	                0 0 90px #ff0000,
+	                0 0 100px #ff0000,
+	                0 0 150px #ff0000;
+	        }
+	        .neon-hover:hover {
+	            text-shadow: 
+	                0 0 2px #ff0000,
+	                0 0 5px #ff0000,
+	                0 0 10px #ff0000,
+	                0 0 20px #ff0000;
+	        }
+	    </style>
+	</head>
+	<body class="text-white flex">
+	    <!-- Sidebar -->
+	    <div class="bg-black w-64 min-h-screen p-4 flex flex-col">
+	        <div class="flex items-center space-x-4 mb-6">
+	            <a href="/admin/dashboard" class="neon-text text-3xl hover:text-red-600">Admin Panel</a>
+	        </div>
+	        <nav class="flex flex-col space-y-2">
+	            <a href="/admin/users" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Users</a>
+	            <a href="/admin/publishers" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Publishers</a>
+	            <a href="/admin/games" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Games</a>
+	            <a href="/admin/pending_games" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Pending Games</a>
+	        </nav>
+	    </div>
+	    <!-- Main Content -->
+	    <div class="flex-1 p-6">
+			<header class="flex justify-between items-center mb-6">
+			    <h2 class="neon-text text-2xl">Admin Dashboard</h2>
+			    <div class="flex items-center space-x-4">
+			        <span class="text-white px-3 py-2">Balance: ₺<span th:text="${balance}"></span></span>
+			        <a href="/profile" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover">Profile</a>
+			        <form th:action="@{/logout}" method="post" style="display:inline;">
+			            <button type="submit" class="hover:bg-red-700 text-white px-3 py-2 rounded neon-hover" style="background:none; border:none; padding:0; margin:0; cursor:pointer;">Logout</button>
+			        </form>
+			    </div>
+			</header>
+	
+	        <main>
+	            <div class="p-5 bg-gray-800 rounded-lg">
+	                <table class="w-full text-sm text-white">
+	                    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+	                        <tr class="h-12">
+	                            <th class="text-left px-4 py-2">Publisher ID</th>
+	                            <th class="text-left px-4 py-2">Company Name</th>
+	                            <th class="text-right px-4 py-2">Actions</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                        <tr th:each="publisher : ${publishers}">
+	                            <td th:text="${publisher.id}" class="px-4 py-2">Publisher ID</td>
+	                            <td th:text="${publisher.companyName}" class="px-4 py-2">Company Name</td>
+	                            <td class="text-right px-4 py-2">
+									<form th:action="@{'/admin/deletePublisher/' + ${publisher.id}}" method="post" class="inline">
+									    <button type="submit" class="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600">Delete</button>
+									</form>
+	                            </td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	            </div>
+	        </main>
+	    </div>
+	</body>
+	</html>

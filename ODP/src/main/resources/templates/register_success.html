@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Successful | Gaming Hub</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-800 text-white">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg max-w-md">
+            <h1 class="text-2xl font-bold text-center mb-2">Kayıt Başarılı!</h1>
+            <p class="text-center text-lg mb-4">Başarıyla kayıt oldunuz. Gaming Hub'a hoş geldiniz!</p>
+            <div class="text-center">
+                <a th:href="@{/}" class="inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">Ana Sayfa'ya Dön</a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/register_success_js.js}"></script>
+</body>
+</html>

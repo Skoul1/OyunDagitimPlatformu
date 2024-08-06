@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skoul</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	   <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/4.1.17/framer-motion.umd.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+        .bg-custom {
+            background-color: #1a1a1a;
+        }
+        .bg-opacity-custom {
+            background-color: rgba(26, 26, 26, 0.8);
+        }
+        .hover-bg-red {
+            background-color: #d14343;
+        }
+        .text-red-500 {
+            color: #e53e3e;
+        }
+        .hover-text-red-500:hover {
+            color: #d14343;
+        }
+		.game-card {
+		       padding: 20px; /* iç boşluk */
+		       background-color: #2a2a2a; /* kart arkaplanı */
+		       border-radius: 8px; /* köşe yuvarlaklığı */
+		       margin: 10px; /* etrafındaki boşluk */
+		       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* gölge efekti */
+		   }
+		   ::-webkit-scrollbar {
+		               width: 12px; /* Kaydırma çubuğunun genişliği */
+		           }
+		   
+		           ::-webkit-scrollbar-track {
+		               background:					rgb(10 10 10) /* Arka plan rengi */
+		           }
+		   
+		           ::-webkit-scrollbar-thumb {
+		               background:	rgb(185 28 28); /* Kaydırma çubuğu rengi */
+		               border-radius: 1px; /* Köşeleri yuvarlatma */
+		           }
+		   
+		           ::-webkit-scrollbar-thumb:hover {
+		               background:	rgb(185 28 28); /*over durumunda rengi */
+		           }
+		   
+    </style>
+</head>
+<body>
+
+    <!-- Video Background -->
+    <div class="fixed inset-0 w-full h-full overflow-hidden">
+        <video autoplay loop muted playsinline class="object-cover w-full h-full">
+            <source src="../static/video/video2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Navigation Bar -->
+	<nav class="z-30 fixed top-0 left-0 w-full flex items-center justify-between p-5 bg-black bg-opacity-60">
+	    <h1 class="text-xl font-bold text-red-500">Skoul</h1>
+	    <div class="space-x-4">
+	        <a href="#store" class="hover:text-red-500">Mağaza</a>
+	    </div>
+	    <div class="relative" th:if="${username}">
+	        <button id="userMenuButton" class="text-red-500 hover:text-red-500 font-bold">
+	            <span th:text="${username}">Kullanıcı</span>
+	        </button>
+	        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2">
+	            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profil</a>
+	            <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+	                <a href="/admin/dashboard" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Admin Paneli</a>
+	            </div>
+	            <div sec:authorize="hasAuthority('ROLE_PUBLISHER')">
+	                <a href="/publisher/panel" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Yayımcı Paneli</a>
+	            </div>
+	            <a href="/library" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Kütüphane</a>
+	            <form th:action="@{/logout}" method="post" style="display:inline;">
+	                <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Çıkış Yap</button>
+	            </form>
+	        </div>
+	    </div>
+	</nav>
+
+    <!-- Main Hero Section -->
+    <section class="relative z-20 flex flex-col items-center justify-center min-h-screen pt-16">
+        <div class="text-center">
+            <h2 class="text-5xl font-bold mb-6 text-red-500">Skoul - Oyun Dağıtım Platformu</h2>
+            <p class="text-lg mb-6">En iyi oyunlara hızlı ve güvenli erişim.</p>
+            <a href="#store" class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Mağazayı Keşfet</a>
+        </div>
+    </section>
+
+	<!-- Store Section -->
+	<section id="store" class="relative z-20 min-h-screen flex flex-col items-center justify-center text-center bg-neutral-950 py-20">
+	    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+	        <h2 class="text-4xl font-bold mb-6 text-red-500">Mağaza</h2>
+	        <p class="text-xl text-white mb-10">Yeni ve popüler oyunlar burada satışta!</p>
+	        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+	            <!-- Thymeleaf ile dinamik içerik yükleme -->
+	            <div th:each="game : ${approvedGames}" class="bg-white shadow-lg rounded-lg overflow-hidden">
+	                <!-- Link to Game Details Page -->
+	                <a th:href="@{'/game/' + ${game.id}}" class="no-underline">
+	                    <img th:src="@{'/images/' + ${game.imageFileName}}" th:alt="${game.title}" class="w-full h-48 object-cover">
+	                    <div class="p-4">
+	                        <h3 th:text="${game.title}" class="text-lg font-bold text-gray-800"></h3>
+	                        <p class="text-sm text-gray-600 mb-1" th:text="'Kategori: ' + ${game.category}"></p>
+	                        <p class="text-md font-semibold text-gray-800 mb-3" th:text="'₺' + ${game.price}"></p>
+	                    </div>
+	                </a>
+	                <div class="flex space-x-2 justify-center mt-2">
+	                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Satın Al</button>
+	                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out">Sepete Ekle</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+
+    <!-- User Account Links with Thymeleaf condition -->
+    <div th:unless="${username}" class="fixed bottom-0 right-0 p-5 z-40">
+        <a href="/login" class="text-red-500 hover:text-red-700 font-bold">Giriş Yap</a> | 
+        <a href="/register" class="text-red-500 hover:text-red-700 font-bold">Kayıt Ol</a>
+    </div>
+
+	<script>
+	       document.addEventListener('DOMContentLoaded', function() {
+	           var userMenuButton = document.getElementById('userMenuButton');
+	           var userMenu = document.getElementById('userMenu');
+	
+	           if (userMenuButton && userMenu) {
+	               userMenuButton.addEventListener('click', function() {
+	                   userMenu.classList.toggle('hidden');
+	               });
+	
+	               document.addEventListener('click', function(event) {
+	                   if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+	                       userMenu.classList.add('hidden');
+	                   }
+	               });
+	           }
+	       });
+
+	   </script>
+	
+	   <script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>

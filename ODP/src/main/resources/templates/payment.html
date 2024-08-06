@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme Yap</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+
+<div class="container mx-auto mt-10">
+    <div class="bg-gray-800 p-5 rounded">
+        <h1 class="text-2xl font-bold mb-5">Ödeme Yap</h1>
+		<form th:action="@{/process_payment}" method="post" th:object="${paymentForm}">
+		    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+		    <input type="hidden" name="userId" th:value="${user.userId}" />
+		    <input type="hidden" name="gameId" th:value="${game.id}" />
+		    <div class="mb-4">
+		        <label class="block text-gray-500">Kart Numarası</label>
+		        <input type="text" name="cardNumber" class="w-full p-2 rounded bg-gray-700 text-white" pattern="[0-9]{13,16}" title="Kart numarası 13 ila 16 rakam arasında olmalıdır.">
+		    </div>
+		    <div class="mb-4">
+		        <label class="block text-gray-500">Son Kullanma Tarihi</label>
+		        <input type="month" name="expiryDate" class="w-full p-2 rounded bg-gray-700 text-white">
+		    </div>
+		    <div class="mb-4">
+		        <label class="block text-gray-500">CVV</label>
+		        <input type="text" name="cvv" class="w-full p-2 rounded bg-gray-700 text-white" pattern="[0-9]{3}" title="CVV 3 rakam olmalıdır.">
+		    </div>
+		    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Ödemeyi Yap</button>
+		</form>
+    </div>
+</div>
+
+</body>
+</html>

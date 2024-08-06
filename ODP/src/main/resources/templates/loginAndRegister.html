@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration | Gaming Hub</title>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/4.1.17/framer-motion.umd.min.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const signInButton = document.getElementById('signIn');
+            const signUpButton = document.getElementById('signUp');
+            const container = document.getElementById('container');
+
+            signUpButton.addEventListener('click', () => {
+                container.classList.add('right-panel-active');
+            });
+
+            signInButton.addEventListener('click', () => {
+                container.classList.remove('right-panel-active');
+            });
+        });
+    </script>
+    <style>
+        @keyframes gradient {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        body {
+            background: linear-gradient(-45deg, #94151f, #94151f, #460c11, #000000);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+            position: relative;
+            overflow: hidden;
+            width: 768px;
+            max-width: 100%;
+            min-height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .form-container, .overlay-container {
+            transition: transform 0.6s ease-in-out;
+            width: 50%;
+            height: 100%;
+        }
+
+        .sign-in-container, .sign-up-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .sign-in-container {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+            background-color: black;
+        }
+
+        .sign-up-container {
+            left: 0;
+            width: 50%;
+            z-index: 1;
+            opacity: 0;
+            background-color: black;
+        }
+
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 100;
+        }
+
+        .overlay {
+            background: rgba(255, 0, 0, 0.8);
+            background: -webkit-linear-gradient(to right, #ff0000, #8b0000);
+            background: linear-gradient(to right, #ff0000, #8b0000);
+            color: white;
+            position: relative;
+            left: -100%;
+            height: 100%;
+            width: 200%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .overlay-panel {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 40px;
+            text-align: center;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .overlay-right {
+            right: 0;
+            transform: translateX(0);
+        }
+
+        .overlay-left {
+            transform: translateX(-20%);
+        }
+
+        .container.right-panel-active .sign-in-container {
+            transform: translateX(100%);
+        }
+
+        .container.right-panel-active .overlay-container {
+            transform: translateX(-100%);
+        }
+
+        .container.right-panel-active .sign-up-container {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 5;
+        }
+
+        .container.right-panel-active .overlay {
+            transform: translateX(50%);
+        }
+
+        .container.right-panel-active .overlay-left {
+            transform: translateX(0);
+        }
+
+        .container.right-panel-active .overlay-right {
+            transform: translateX(20%);
+        }
+
+        .social-container a {
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 5px;
+            height: 40px;
+            width: 40px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .social-container a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form th:action="@{/process_register}" th:object="${user}" method="post" class="bg-black text-white p-8 rounded-lg shadow-md">
+                <h1 class="text-2xl font-bold mb-4">Register as User</h1>
+                <div class="social-container flex justify-center space-x-3 mb-4">
+                    <a href="#" class="text-blue-600"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-red-600"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="text-gray-800"><i class="fab fa-steam"></i></a>
+                </div>
+                <span class="text-gray-500 mb-4 block">or use your email for registration</span>
+                <input type="text" th:field="*{username}" placeholder="Username" required class="bg-gray-800 text-white mb-4 p-3 rounded w-full">
+                <input type="password" th:field="*{password}" placeholder="Password" required class="bg-gray-800 text-white mb-4 p-3 rounded w-full">
+                <input type="text" th:field="*{firstName}" placeholder="First Name" required class="bg-gray-800 text-white mb-4 p-3 rounded w-full">
+                <input type="text" th:field="*{lastName}" placeholder="Last Name" required class="bg-gray-800 text-white mb-4 p-3 rounded w-full">
+                <input type="email" th:field="*{email}" placeholder="Email" required class="bg-gray-800 text-white mb-4 p-3 rounded w-full">
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">Register</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form th:action="@{/login}" th:object="${user}" method="post" class="bg-black text-white p-8 rounded-lg shadow-md">
+                <h1 class="text-2xl font-bold mb-4">Login as User</h1>
+                <div class="social-container flex justify-center space-x-3 mb-4">
+                    <a href="#" class="text-blue-600"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-red-600"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="text-gray-800"><i class="fab fa-steam"></i></a>
+                </div>
+                <span class="text-gray-500 mb-4 block">or use your account</span>
+                <input type="text" th:field="*{username}" placeholder="Username" required class="bg-gray-800 text-white mb-4 p-3 rounded w-full">
+                <input type="password" th:field="*{password}" placeholder="Password" required class="bg-gray-800 text-white mb-4 p-3 rounded w-full">
+                <div th:if="${param.error}">
+                    <p class="text-red-500">Invalid username or password.</p>
+                </div>
+                <a href="#" class="text-gray-500 mb-4 block">Forgot your password?</a>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">Login</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1 class="text-2xl font-bold mb-4">Hello Friend!</h1>
+                    <p class="mb-4">Already have an account? Sign in here</p>
+                    <button class="bg-transparent border border-white text-white py-2 px-4 rounded" id="signIn">Login</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1 class="text-2xl font-bold mb-4">Welcome Back!</h1>
+                    <p class="mb-4">Don't have an account? Register here</p>
+                    <button class="bg-transparent border border-white text-white py-2 px-4 rounded" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

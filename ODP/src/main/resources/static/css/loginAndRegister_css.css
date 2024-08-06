@@ -1,0 +1,77 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: #282c34;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #20232a;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tab-buttons button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #61dafb;
+    color: #20232a;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: auto;          /* Auto width based on text content */
+    display: inline-block; /* Inline block for side-by-side layout */
+}
+
+.tab-buttons button:hover {
+    opacity: 0.9;
+}
+
+.form-section {
+    display: none;
+    margin-top: 20px;
+}
+
+.form-section.active {
+    display: block;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="submit"],
+button {
+    width: calc(100% - 20px); /* Adjust width taking padding into account */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #333; /* Subtle border for better visual effect */
+    background-color: #333;
+    color: #fff; /* Text color */
+    font-size: 16px;
+    box-sizing: border-box; /* Include padding and border in the width */
+    text-align: center; /* Center the text inside buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+input[type="submit"], button {
+    background-color: #61dafb;
+    color: #20232a;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover, button:hover {
+    opacity: 0.9;
+}
+
+p {
+    color: #ff6b6b;
+}

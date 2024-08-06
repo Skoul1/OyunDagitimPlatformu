@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Game</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/add_game_form_css.css}" />
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Add a New Game</h1>
+            <form th:action="@{/publisher/save_game}" th:object="${game}" method="post">
+                <input type="text" th:field="*{title}" placeholder="Title" required>
+                <textarea th:field="*{description}" placeholder="Description" required></textarea>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

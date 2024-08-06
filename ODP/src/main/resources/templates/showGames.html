@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${game.title}">Oyun Detayları</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(45deg, #000000, #0f0f0f, #1c1c1c, #272727);
+            min-height: 100vh;
+        }
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 30;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <!-- Navigation Bar -->
+    <nav>
+        <h1 class="text-xl font-bold text-red-500">Skoul</h1>
+        <div class="space-x-4">
+            <a href="index.html" class="hover:text-red-500">Mağaza</a>
+        </div>
+        <div th:if="${username}" class="relative">
+            <button id="userMenuButton" class="text-red-500 hover:text-red-500 font-bold">
+                <span th:text="${username}">Kullanıcı</span>
+            </button>
+            <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2">
+                <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profil</a>
+                <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <a href="/admin/dashboard" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Admin Paneli</a>
+                </div>
+                <div sec:authorize="hasAuthority('ROLE_PUBLISHER')">
+                    <a href="/publisher/panel" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Yayımcı Paneli</a>
+                </div>
+                <a href="/library" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Kütüphane</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Çıkış Yap</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main p-8 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mt-16">
+        <!-- Game Image -->
+        <div>
+            <img th:src="@{'/images/' + ${game.imageFileName}}" th:alt="${game.title}" class="rounded-lg shadow-lg">
+        </div>
+        
+        <!-- Game Details -->
+        <div class="game-details flex flex-col p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="game-title text-4xl text-red-500" th:text="${game.title}"></h2>
+            <p class="game-category text-gray-400 mt-2" th:text="'Kategori: ' + ${game.category}"></p>
+            <p class="game-price text-2xl text-black mt-2" th:text="'₺' + ${game.price}"></p>
+            <div th:if="${!ownsGame}" class="buttons flex mt-4 gap-4">
+                <form th:action="@{'/pay/' + ${game.id}}" method="get">
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Satın Al</button>
+                </form>
+                <button type="button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Sepete Ekle</button>
+            </div>
+            <div th:if="${ownsGame}" class="buttons flex mt-4 gap-4">
+                <button type="button" disabled class="bg-gray-500 text-white font-bold py-2 px-4 rounded">Kütüphanede</button>
+                <a th:href="@{'/download/' + ${game.id}}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    <i class="fas fa-download"></i> İndir
+                </a>
+            </div>
+        </div>
+    </div>
+
+	   <!-- Description -->
+	   <div class="bg-white text-black p-8 mt-6 mx-auto max-w-6xl rounded-lg">
+	       <h2 class="text-2xl text-red-500">Açıklama</h2>
+	       <p th:text="${game.description}"></p>
+	   </div>
+	
+	   <!-- Footer -->
+	   <footer class="bg-white0 text-center text-gray-500 py-4 mt-6">
+	       &copy; 2024 Epic Games, Inc. All rights reserved.
+	   </footer>
+	</body>
+	</html>
